@@ -3,7 +3,15 @@ const router = express.Router();
 
 // Routes list
 router.get("", (req, res) => {
-    res.send("Hello world");
+    const locals = {
+        title: "Nodejs blog",
+        description: "Demo"
+    }
+    res.render("index.ejs", {locals});
+});
+
+router.get("/about", (req, res) => {
+    res.render("about.ejs");
 });
 
 module.exports = router;
