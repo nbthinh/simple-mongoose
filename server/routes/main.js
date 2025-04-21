@@ -57,6 +57,53 @@ router.get("/about", (req, res) => {
     res.render("about.ejs");
 });
 
+router.get("/post/:id", async (req, res) => {
+    
+    try {
+        
+        let slug = req.params.id;
+
+        let data = await Post.findById({
+            _id: slug
+        });
+        const locals = {
+            title: data.title,
+            description: "Demo"
+        }
+        res.render("post", {locals, data});
+    }
+    catch(error) {
+        console.log("error = ", error);
+    }
+});
+
+
+router.post("/search", async (req, res) => {
+    
+    try {
+        const locals = {
+            title: "Search",
+            description: "Demo"
+        }
+
+        let searchTerm = req.body.searchTerm;
+        const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "")
+        const data = await Post.find({
+            $or: [
+                { title: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
+                { body: { $regex: new RegExp(searchNoSpecialChar, 'i') } }
+            ]
+        });
+        res.render("search.ejs", {
+            data,
+            locals
+        });
+    }
+    catch(error) {
+        console.log("error = ", error);
+    }
+});
+
 // function insertPostData () {
 //     Post.insertMany([
 //         {
