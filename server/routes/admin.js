@@ -170,6 +170,14 @@ router.delete("/delete-post/:id", authMiddleware, async (req, res) => {
     }
 })
 
+
+
+router.get("/logout", async (req, res) => {
+    res.clearCookie('token');
+    // res.json({ message: "Logout successful" });
+    res.redirect("/")
+})
+
 // router.post("/admin", async (req, res) => {
     
 //     try {
